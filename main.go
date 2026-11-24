@@ -3,53 +3,35 @@ package main
 import (
 	"fmt"
 	"os"
-	"strconv"
 )
 
 func main() {
-	//pileA := []int{}
-	pileA := []int{5, 2, 8}
-	//pileB := []int{7, 2, 4}
-	//pileB := []int{}
-	pileB := []int{3, 1, 2}
+	pileA, valide := RecupererArguments(os.Args[1:])
+	pileB := []int{}
 
-	for i := 1; i < len(os.Args); i++ {
-		nombre, err := strconv.Atoi(os.Args[i])
+	//arguments := strings.Fields(strings.Join(os.Args[1:], " "))
 
-		if err != nil {
-			fmt.Fprint(os.Stderr, "Error")
-			return
-		}
-
-		for _, valeur := range pileA {
-			if valeur == nombre {
-				fmt.Fprintln(os.Stderr, "Error")
-				return
-			}
-		}
-		pileA = append(pileA, nombre)
+	if !valide {
+		fmt.Fprintln(os.Stderr, "Error")
+		return
 	}
 
-	//sa(pileA)
-	//sb(pileB)
-	//ss(pileA, pileB)
-	//pileA, pileB = pa(pileA, pileB)
-	//pileA, pileB = pb(pileA, pileB)
-	//pileA = ra(pileA)
-	//pileB = rb(pileB)
-	//pileA, pileB = rr(pileA, pileB)
-	//pileA = rra(pileA)
-	//pileB = rrb(pileB)
-	pileA, pileB = rrr(pileA, pileB)
+	pileB = []int{}
 
-	//triDeux(pileA)
-	//triTrois(pileA)
-	//pileA = triDeux(pileA)
-	//pileA = triTrois(pileA)
-	//pileA, pileB = triQuatre(pileA, pileB)
-	//pileA, pileB = triCinq(pileA, pileB)
-
-	fmt.Println(pileA)
-	fmt.Println(pileB)
-	fmt.Print("Pile A triée :", estTrie(pileA))
+	//CHOIX AUTOMATIQUE DE TRI - BLOCK SWITCH
+	switch len(pileA) {
+	case 2:
+		triDeux(pileA)
+	case 3:
+		pileA = triTrois(pileA)
+	case 4:
+		pileA, pileB = triQuatre(pileA, pileB)
+	case 5:
+		pileA, pileB = triCinq(pileA, pileB)
+	default:
+		//fmt.Println("Le programme ne gère pas les piles de plus de 5 éléments.")
+		if len(pileA) > 5 {
+			pileA, pileB = triBlocs(pileA, pileB)
+		}
+	}
 }

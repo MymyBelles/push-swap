@@ -23,7 +23,7 @@ func triTrois(a []int) []int {
 		a = ra(a)
 	} else if a[0] < a[1] && a[1] > a[2] && a[0] < a[2] {
 		sa(a)
-		a = rra(a)
+		a = ra(a)
 	} else if a[0] < a[1] && a[1] > a[2] && a[0] > a[2] {
 		a = rra(a)
 	}

@@ -1,0 +1,18 @@
+# Executables
+/push-swap
+/checker
+
+# Fichiers de compilation
+*.exe
+*.test
+*.out
+
+# Fichiers systeme macOS
+.DS_Store
+
+# Configuration locale VS Code
+.vscode/
+
+# Fichiers temporaires
+*.tmp
+*.log
