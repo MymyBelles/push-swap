@@ -5,13 +5,15 @@ import (
 	"strings"
 )
 
+// ========================================
+// VALIDATION DE LA PILE
+// ========================================
+
 func validerPile(pile []int) bool {
-	// VERIFIER SI LA PILE EST VIDE
 	if len(pile) == 0 {
 		return false
 	}
 
-	// VERIFIER SI LA PILE CONTIENT DES DOUBLONS
 	doublons := make(map[int]bool)
 
 	for _, valeur := range pile {
@@ -24,8 +26,11 @@ func validerPile(pile []int) bool {
 	return true
 }
 
+// ========================================
+// VALIDATION DES ARGUMENTS
+// ========================================
+
 func RecupererArguments(args []string) ([]int, bool) {
-	// VERIFIER LES ARGUMENTS VIDES
 	for _, arg := range args {
 		if strings.TrimSpace(arg) == "" {
 			return nil, false
@@ -50,4 +55,18 @@ func RecupererArguments(args []string) ([]int, bool) {
 	}
 
 	return pile, true
+}
+
+// ========================================
+// VERIFICATION DU TRI
+// ========================================
+
+func estTrie(pileA []int) bool {
+	for i := 0; i < len(pileA)-1; i++ {
+		if pileA[i] > pileA[i+1] {
+			return false
+		}
+	}
+
+	return true
 }

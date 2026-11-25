@@ -16,6 +16,8 @@ le nombre de mouvements.
 - Optimiser le nombre de mouvements.
 - Gérer les erreurs et les arguments.
 - Développer des tests unitaires.
+- Organiser et maintenir un projet informatique.
+- Utiliser Git et GitHub pour le versionnement.
 
 ## Les deux programmes
 
@@ -24,42 +26,56 @@ le nombre de mouvements.
 Génère les instructions nécessaires pour trier la pile A
 dans l'ordre croissant.
 
+La pile B est initialement vide et sert de pile auxiliaire.
+
+À la fin du tri :
+
+- La pile A doit être triée dans l'ordre croissant.
+- La pile B doit être vide.
+- Le nombre de mouvements doit être minimisé/ optimisé.
+
 ### Checker
 
 Lit et exécute les instructions reçues afin de vérifier
 si la pile A est triée et si la pile B est vide.
 
-Il retourne :
-
-- OK : le tri est correct.
-- KO : le tri est incorrect.
-- Error : les arguments ou les instructions sont invalides.
+| Résultat | Signification |
+|----------|---------------|
+| OK | Le tri est correct et la pile B est vide. |
+| KO | La pile A n'est pas triée ou la pile B n'est pas vide. |
+| Error | Les arguments ou les instructions sont invalides. |
 
 ## Les 11 opérations
 
-
-| sa : Échange les deux premiers éléments de A 
-| sb : Échange les deux premiers éléments de B 
-| ss : Exécute sa et sb simultanément 
-| pa : Déplace le sommet de B vers A 
-| pb : Déplace le sommet de A vers B 
-| ra : Effectue une rotation de A 
-| rb : Effectue une rotation de B 
-| rr : Effectue une rotation des deux piles 
-| rra : Effectue une rotation inverse de A 
-| rrb : Effectue une rotation inverse de B 
-| rrr : Effectue une rotation inverse des deux piles 
+| Opération | Description |
+|-----------|-------------|
+| `sa` | Échange les deux premiers éléments de A. |
+| `sb` | Échange les deux premiers éléments de B. |
+| `ss` | Exécute sa et sb simultanément. |
+| `pa` | Déplace le sommet de B vers A. |
+| `pb` | Déplace le sommet de A vers B. |
+| `ra` | Déplace le premier élément de A en dernière position. |
+| `rb` | Déplace le premier élément de B en dernière position. |
+| `rr` | Exécute ra et rb simultanément. |
+| `rra` | Déplace le dernier élément de A en première position. |
+| `rrb` | Déplace le dernier élément de B en première position. |
+| `rrr` | Exécute rra et rrb simultanément. |
 
 ## Stratégie algorithmique
 
 Le programme sélectionne automatiquement une méthode de tri
 en fonction du nombre d'éléments.
 
-- 2 éléments : triDeux.
-- 3 éléments : triTrois.
-- 4 éléments : triQuatre.
-- 5 éléments : triCinq.
-- Plus de 5 éléments : triBlocs.
+| Nombre d'éléments | Fonction utilisée |
+|-------------------|-------------------|
+| 0 ou 1 | Aucun mouvement nécessaire |
+| 2 | `triDeux()` |
+| 3 | `triTrois()` |
+| 4 | `triQuatre()` |
+| 5 | `triCinq()` |
+| Plus de 5 | `triBlocs()` |
+
+### Tri par blocs
 
 Le tri par blocs repose sur les étapes suivantes :
 
@@ -71,12 +87,31 @@ Le tri par blocs repose sur les étapes suivantes :
 
 La taille des blocs est adaptée au nombre d'éléments.
 
+Cette stratégie vise à réduire le nombre de mouvements
+nécessaires pour trier les grandes listes.
+
+## Prérequis
+
+- Go installé sur l'ordinateur.
+- Git pour récupérer et versionner le projet.
+- Un terminal pour compiler et exécuter les programmes.
+
+Le projet utilise uniquement les packages de la bibliothèque
+standard de Go.
+
 ## Compilation
+
+Depuis la racine du projet :
 
 ```bash
 go build -o push-swap .
 go build -o checker ./cmd/checker
 ```
+
+Ces commandes génèrent deux exécutables :
+
+- `push-swap`
+- `checker`
 
 ## Utilisation
 
@@ -120,6 +155,7 @@ OK
 ### Compter les mouvements
 
 ```bash
+ARG="3 5 2 1 4"
 ./push-swap "$ARG" | wc -l
 ```
 
@@ -131,9 +167,13 @@ Le programme vérifie :
 - Les doublons.
 - Les arguments vides.
 - Les dépassements de capacité du type int.
-- Les instructions inexistantes ou mal formatées dans Checker.
+- Les instructions inexistantes dans Checker.
+- Les instructions mal formatées dans Checker.
 
 Les erreurs sont affichées sur la sortie d'erreur standard.
+
+En l'absence d'arguments, les programmes ne produisent
+aucune sortie.
 
 ## Organisation du projet
 
@@ -142,27 +182,48 @@ push-swap/
 ├── cmd/
 │   └── checker/
 │       ├── main.go
-│       ├── push.go
-│       ├── reverse.go
-│       ├── rotate.go
-│       ├── sorted.go
-│       ├── swap.go
+│       ├── operations.go
 │       ├── validation.go
-│       └── fichiers de tests
+│       └── main_test.go
 ├── main.go
-├── chunks.go
-├── push.go
-├── reverse.go
-├── rotate.go
+├── operations.go
 ├── sort.go
-├── sorted.go
-├── swap.go
 ├── validation.go
-├── fichiers de tests
+├── main_test.go
 ├── go.mod
 ├── .gitignore
 └── README.md
 ```
+
+Le projet est organisé en 12 fichiers, hors exécutables
+et fichiers internes de Git.
+
+### Fichiers de Push-Swap
+
+| Fichier | Rôle |
+|---------|------|
+| `main.go` | Point d'entrée et sélection de l'algorithme. |
+| `operations.go` | Implémentation des 11 opérations autorisées. |
+| `sort.go` | Algorithmes de tri et vérification du tri. |
+| `validation.go` | Récupération et validation des arguments. |
+| `main_test.go` | Regroupement des 27 tests unitaires. |
+
+### Fichiers du Checker
+
+| Fichier | Rôle |
+|---------|------|
+| `cmd/checker/main.go` | Lecture et exécution des instructions. |
+| `cmd/checker/operations.go` | Exécution des 11 opérations sans affichage des mouvements. |
+| `cmd/checker/validation.go` | Validation des arguments et vérification du tri. |
+| `cmd/checker/main_test.go` | Regroupement des 22 tests unitaires. |
+
+### Fichiers complémentaires
+
+| Fichier | Rôle |
+|---------|------|
+| `go.mod` | Configuration du module Go. |
+| `.gitignore` | Exclusion des exécutables et fichiers temporaires de Git. |
+| `README.md` | Documentation du projet. |
 
 ## Performances observées
 
@@ -172,42 +233,62 @@ push-swap/
 | 500 | 5711 | OK |
 
 Ces résultats correspondent à des essais sur des listes aléatoires.
-Le nombre de mouvements peut varier selon l'ordre initial des valeurs.
+
+Le nombre de mouvements peut varier selon l'ordre initial
+des valeurs.
 
 ## Tests unitaires
 
-Le projet comporte 49 tests unitaires :
+Le projet comporte 49 tests unitaires.
 
-- 27 tests pour Push-Swap.
-- 22 tests pour Checker.
+| Programme | Nombre de tests |
+|-----------|-----------------|
+| Push-Swap | 27 |
+| Checker | 22 |
+| Total | 49 |
 
-Les tests couvrent les opérations, la validation des arguments,
-la vérification du tri et les algorithmes de tri.
+Les tests couvrent :
 
-Pour exécuter les tests :
+- Les opérations Swap.
+- Les opérations Push.
+- Les opérations Rotate.
+- Les opérations Reverse Rotate.
+- La validation des arguments.
+- La vérification du tri.
+- Les algorithmes de tri.
+
+### Exécuter les tests
 
 ```bash
 go test -v ./...
 ```
 
-Pour analyser le code :
+### Exécuter les tests sans utiliser le cache
+
+```bash
+go test -count=1 ./...
+```
+
+### Analyser le code
 
 ```bash
 go vet ./...
 ```
 
-Pour formater le code :
+### Formater le code
 
 ```bash
 go fmt ./...
 ```
 
-## Technologies utilisées
+## Technologies et outils utilisés
 
 - Go (Golang)
 - Visual Studio Code
 - Git
 - GitHub
-- claude code
+- Claude Code
 
-Projet d'algorithmie : Push-Swap.
+---
+
+Projet d'algorithmie — Push-Swap
